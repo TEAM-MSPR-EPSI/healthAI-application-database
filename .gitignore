@@ -1,0 +1,14 @@
+# Secrets — ne jamais commiter
+.env
+
+# Données MinIO locales (si monté en bind mount)
+data/
+
+# Cache Nginx local
+nginx/cache/
+
+# Certificats TLS
+certs/
+*.pem
+*.key
+*.crt
