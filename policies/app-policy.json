@@ -12,16 +12,11 @@
       "Resource": [
         "arn:aws:s3:::avatars",
         "arn:aws:s3:::avatars/*",
-        "arn:aws:s3:::covers",
-        "arn:aws:s3:::covers/*",
+
         "arn:aws:s3:::photos",
         "arn:aws:s3:::photos/*",
         "arn:aws:s3:::videos",
-        "arn:aws:s3:::videos/*",
-        "arn:aws:s3:::thumbnails",
-        "arn:aws:s3:::thumbnails/*",
-        "arn:aws:s3:::stories",
-        "arn:aws:s3:::stories/*"
+        "arn:aws:s3:::videos/*"
       ]
     },
     {
@@ -36,38 +31,9 @@
       ],
       "Resource": [
         "arn:aws:s3:::avatars/*",
-        "arn:aws:s3:::covers/*",
+
         "arn:aws:s3:::photos/*",
-        "arn:aws:s3:::videos/*",
-        "arn:aws:s3:::thumbnails/*",
-        "arn:aws:s3:::stories/*",
-        "arn:aws:s3:::messages-media/*"
-      ]
-    },
-    {
-      "Sid": "FullAccessPrivateMedia",
-      "Effect": "Allow",
-      "Action": [
-        "s3:GetObject",
-        "s3:PutObject",
-        "s3:DeleteObject",
-        "s3:ListBucket",
-        "s3:GetObjectTagging",
-        "s3:PutObjectTagging"
-      ],
-      "Resource": [
-        "arn:aws:s3:::messages-media",
-        "arn:aws:s3:::messages-media/*"
-      ]
-    },
-    {
-      "Sid": "GeneratePresignedUrls",
-      "Effect": "Allow",
-      "Action": [
-        "s3:GetObject"
-      ],
-      "Resource": [
-        "arn:aws:s3:::messages-media/*"
+        "arn:aws:s3:::videos/*"
       ]
     }
   ]

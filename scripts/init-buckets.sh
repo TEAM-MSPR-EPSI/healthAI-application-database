@@ -13,7 +13,7 @@ echo "✅  MinIO est prêt."
 
 # Avatars & photos de profil (publiques en lecture)
 mc mb --ignore-existing local/avatars
-mc mb --ignore-existing local/covers
+
 
 # Photos postées (publiques en lecture)
 mc mb --ignore-existing local/photos
@@ -21,14 +21,7 @@ mc mb --ignore-existing local/photos
 # Vidéos postées (publiques en lecture)
 mc mb --ignore-existing local/videos
 
-# Stories (courte durée, lifecycle 24h)
-mc mb --ignore-existing local/stories
 
-# Messages privés — médias (accès restreint)
-mc mb --ignore-existing local/messages-media
-
-# Thumbnails générées (publiques en lecture)
-mc mb --ignore-existing local/thumbnails
 
 echo "✅  Buckets créés."
 
@@ -37,35 +30,12 @@ echo "✅  Buckets créés."
 # ─────────────────────────────────────────────
 
 # Buckets en lecture publique (anonymous GET)
-for bucket in avatars covers photos videos thumbnails; do
+for bucket in avatars photos videos; do
   mc anonymous set download local/$bucket
   echo "🔓  $bucket → lecture publique"
 done
 
-# Stories : lecture publique mais lifecycle 24h
-mc anonymous set download local/stories
 
-# Messages privés : aucun accès public
-mc anonymous set none local/messages-media
-echo "🔒  messages-media → privé"
-
-# ─────────────────────────────────────────────
-#  Lifecycle — suppression automatique des stories (24h)
-# ─────────────────────────────────────────────
-mc ilm rule add \
-  --expiry-days 1 \
-  local/stories
-echo "⏱   Lifecycle stories → expiry 1 jour"
-
-# ─────────────────────────────────────────────
-#  Lifecycle — suppression thumbnails orphelines (30j)
-# ─────────────────────────────────────────────
-mc ilm rule add \
-  --expiry-days 30 \
-  local/thumbnails
-echo "⏱   Lifecycle thumbnails → expiry 30 jours"
-
-# ─────────────────────────────────────────────
 #  Compte de service pour l'application
 # ─────────────────────────────────────────────
 mc admin user add local "$APP_ACCESS_KEY" "$APP_SECRET_KEY" 2>/dev/null || true

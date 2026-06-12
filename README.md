@@ -1,7 +1,7 @@
 # 📦 MinIO — Stockage médias réseau social
 
 Stack de stockage objet S3-compatible pour une application style réseau social.
-Gère photos, vidéos, avatars, stories et médias privés (messages).
+Gère photos, vidéos et avatars.
 
 ---
 
@@ -24,12 +24,9 @@ Internet / App
 | Bucket           | Usage                          | Accès         | Lifecycle  |
 |------------------|--------------------------------|---------------|------------|
 | `avatars`        | Photos de profil               | Public (GET)  | —          |
-| `covers`         | Bannières de profil            | Public (GET)  | —          |
+
 | `photos`         | Photos postées                 | Public (GET)  | —          |
 | `videos`         | Vidéos postées                 | Public (GET)  | —          |
-| `stories`        | Stories éphémères              | Public (GET)  | Expiry 24h |
-| `thumbnails`     | Miniatures générées            | Public (GET)  | Expiry 30j |
-| `messages-media` | Pièces jointes messages privés | Privé         | —          |
 
 ---
 
@@ -87,12 +84,8 @@ await s3.send(new PutObjectCommand({
   ContentType: "image/jpeg",
 }));
 
-// URL signée pour un média privé (messages) — valable 1h
-const signedUrl = await getSignedUrl(
-  s3,
-  new GetObjectCommand({ Bucket: "messages-media", Key: fileKey }),
-  { expiresIn: 3600 }
-);
+// Download ou accès direct via URL publique
+// Exemple: http://localhost/photos/...
 ```
 
 ### Python (boto3)
@@ -112,12 +105,7 @@ s3 = boto3.client(
 s3.upload_fileobj(file_obj, "photos", f"users/{user_id}/photo.jpg",
                   ExtraArgs={"ContentType": "image/jpeg"})
 
-# URL présignée
-url = s3.generate_presigned_url(
-    "get_object",
-    Params={"Bucket": "messages-media", "Key": key},
-    ExpiresIn=3600,
-)
+
 ```
 
 ---
@@ -155,9 +143,6 @@ avatars/
   {userId}/avatar.webp
   {userId}/avatar_thumb.webp
 
-covers/
-  {userId}/cover.webp
-
 photos/
   {userId}/{postId}/{uuid}.jpg
   {userId}/{postId}/{uuid}_thumb.jpg
@@ -165,15 +150,6 @@ photos/
 videos/
   {userId}/{postId}/{uuid}.mp4
   {userId}/{postId}/{uuid}_preview.gif
-
-stories/
-  {userId}/{storyId}/{uuid}.jpg   ← supprimé automatiquement après 24h
-
-messages-media/
-  {conversationId}/{messageId}/{uuid}.jpg
-
-thumbnails/
-  {sourceKey}_thumb.webp          ← supprimé automatiquement après 30j
 ```
 
 ---
