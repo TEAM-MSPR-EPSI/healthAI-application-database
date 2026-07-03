@@ -24,7 +24,6 @@ Internet / App
 | Bucket           | Usage                          | Accès         | Lifecycle  |
 |------------------|--------------------------------|---------------|------------|
 | `avatars`        | Photos de profil               | Public (GET)  | —          |
-
 | `photos`         | Photos postées                 | Public (GET)  | —          |
 | `videos`         | Vidéos postées                 | Public (GET)  | —          |
 
